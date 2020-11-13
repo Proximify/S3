@@ -39,10 +39,12 @@ class S3
 
         $key = $credentials['key'];
         $secret = $credentials['secret'];
+        $region = (empty($options['region'])) 
+            ? 'ca-central-1' : $options['region'];
 
         self::$client = new S3Client([
             'version'     => 'latest',
-            'region'      =>  'ca-central-1',
+            'region'      => $region,
             'credentials' => new Credentials($key, $secret)
         ]);
     }
