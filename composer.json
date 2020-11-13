@@ -1,12 +1,12 @@
 {
-    "name": "proximify/component-template",
-    "description": "Template for the creation of component packages.",
+    "name": "proximify/s3",
+    "description": "Access to AWS's Bucket interface without any hassle.",
     "type": "library",
     "license": "MIT",
     "authors": [
         {
-            "name": "Proximify Inc",
-            "email": "support@proximify.ca"
+            "name": "Mert Metin",
+            "email": "mert@proximify.ca"
         }
     ],
     "autoload": {
@@ -16,6 +16,10 @@
     },
     "minimum-stability": "dev",
     "require": {
-        "php": ">=7.1.0"
+        "php": ">=7.1.0",
+        "aws/aws-sdk-php": "^3.0@dev"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5@dev"
     }
 }

@@ -1,107 +1,150 @@
-# Component Template
+# Amazon S3
 
-Template for the creation of component packages.
+Amazon Simple Storage Service, or S3 in short, is a service to store and retrieve any amount of data, at any time, from anywhere on the web.
+
 
 <!-- The TOC can be provided inline as nested bullets or in a separate file. Regardless, this starter file should have links to other root-level doc files so that a reader can navigate all the documentation by reading the text and clicking on hyperlinks within it. -->
 
 ## Table of contents
 -  See [table of contents](docs/toc.md).
 
-## Getting started
+## Installation
 
-1. Download this repo manually from GitHub.
-1. Change the name of the root folder to reflect the name of your component (use a CamelCase name).
-1. Edit the composer.json to set the proper name of your component package (use lowercase, dash separated words).
-1. Renamed the main PHP and JSON files to the CamelCase name of the component.
-1. Edit the README and files under `docs/` to include the documentation for your component. Use breadcrumbs at the top of each doc page to show its location in the Table of Contents (TOC). Keep the `toc.md` file up to date with the latest TOC of your documentation.
-1. If the packages depends of foreign packages (e.g. NPM, PIP, etc), use the [ForeignPackages](https://packagist.org/packages/proximify/foreign-packages) component to install and update them when your component is installed or updated.
-1. Add CLI actions for testing your component bu using the [CLI Actions](https://packagist.org/packages/proximify/cli-actions) component.
-1. If possible to test your component within a webpage, add an `index.php` file at `dev/www` and test that it works by running `cd dev/www && php -S localhost:8000` and visiting `http://localhost:8000` with your browser.
-1. Submit your project to **Packagist** of it is public and test that it works by adding it as a requirement to some other project.
+<pre>
+composer require proximify/s3
+</pre>
 
-## File Structure
+## API
 
-A **component package** is a folder with a standardized file structure.
+### `init`
 
-The **entry point** file must be place under a `src` folder at the root of the package. It must be a class definition where the class name is the module name. There file should only define one class and should not run any code. The constructor of the class should accept an `array $options = []` argument where the **named** arguments needed to create an object are provided.
+<pre>
+public static function init(array $credentials, array $options): void
+</pre>
 
-The **Composer project name** is always lowercase and with no spaces. The convention is to fill spaces with dashes. In addition, a namespace is mandatory. For example,
+#### Description
 
-    proximify/my-component
+Creates a new S3 client instance with the options.
 
-In contrast, the **component name** is given as a single word in CamelCase with a name space also in CamelCase. For example,
+#### Parameters
 
-    Proximify\MyComponent
+| Option key   | Description                       |
+| ------------ | --------------------------------- |
+| **credentials** | AWS API credentials (key, secret) |
+| **options**       | S3 options (e.g. region)        |
 
-The **short or unqualified component name** is thee component name within its namespace. Similarly, the **short or unqualified project name** is the name of the project without its namespace.
+### `create`
 
-The typical file structure of a component package is:
+<pre>
+public static function create($bucketName): string
+</pre>
 
-```
-# Project name: proximify/my-component
+#### Description
 
-MyComponent
-├── assets
-│   ├── images
-│   │   └── example.svg
-│   └── fonts
-├── docs
-│   ├── toc.md
-│   └── intro.md
-├── config
-│   └── settings.json
-├── src
-│   └── MyComponent.php
-├── dev
-│   ├── tests
-│   └── www
-├── LICENSE
-├── README.md
-└── composer.json
-```
+Creates a new S3 bucket.
 
-### Important considerations
+#### Parameters
 
-Assets related to documentation should be in `docs/assets/`. The assets that are needed by the component to do it's normal work go under the **root** `assets/` directory. The assets that are only needed for development should go under `dev/assets/`, and if the assets is only needed for testing, it can be should be placed under under `dev/tests/assets/`.
+| Option key   | Description                       |
+| ------------ | --------------------------------- |
+| **bucketName** | Bucket to create |
 
-The folders `docs` and `dev` are **not included** in production environments. Everything related to documentation should be placed under `docs` except for the entry point README.md. Everything related to development should be placed under the `dev` folder.
+### `delete`
 
-Summary:
+<pre>
+public static function delete($bucketName): string
+</pre>
 
-1. The component must work without the `docs` and `dev` folders;
-1. All files related to the documentation must go under `docs` (expected for the `README.md`);
-1. All files related to development must fo under `dev`;
-1. Testing files must go under `dev/tests` (except for the entry point `dev/www` used for web-based testing).
+#### Description
 
-## Testing
+Deletes the S3 bucket.
 
-The component should be testable from the command line via well-documented composer arguments. For example, when the command
+#### Parameters
 
-```bash
-$ composer test:fetch arg1 arg2 ...
-```
+| Option key   | Description                       |
+| ------------ | --------------------------------- |
+| **bucketName** | Name of the bucket to delete |
 
-is run at the root of the project, it will perform a test named "fetch" with arguments arg1, arg2, etc.
+### `list`
 
-### Web-based testing
+<pre>
+public static function list(): array
+</pre>
 
-The `dev/www` can be given as a visual dashboard for performing tests. Do not use that options as a way of avoiding providing CLI tests or CLI documentation. The `dev/www` is meant to be an alternative visual way to run tests.
+#### Description
 
-Some components can only be tested from within a webpage. In such cases, the `dev/www` folder is a mandatory as an entry point for the tests.
+Returns a list of all buckets owned by the authenticated sender of the request.
 
-## Shared resources
+### `empty`
 
-Some components might need access to a database, the file system, or to daemons, such as cron jobs. When that's the case, they should:
+<pre>
+public static function empty($bucketName): void
+</pre>
 
-1. Require a proper resource manager, such as a `proximify/db-manager` or `proximify/cron-manager`.
+#### Description
 
-1. Define schemas in YAML located in a root `schemas/YYY/` folder, where YYY us the type of resource, such as `db` or `cron`.
+Efficiently deletes many objects from a single Amazon S3 bucket using an iterator that yields keys.
 
-1. Define `install` and `update` scripts in `composer.json` so that the component registers one or more schemas with the appropriate resource manager. For example, 
-    ```bash
-    $ cd vendor/proximify/cron-manager && composer cron:register '../../schemas/cron'
-    ```
+#### Parameters
 
+| Option key   | Description                       |
+| ------------ | --------------------------------- |
+| **bucketName** | Name of the bucket to empty |
+
+### `put`
+
+<pre>
+public static function empty($bucketName): void
+</pre>
+
+#### Description
+Adds a file to a bucket
+#### Parameters
+
+| Option key   | Description                       |
+| ------------ | --------------------------------- |
+| **bucketName** | Name of the bucket to put the object |
+| **file** | File |
+| **path (optional)** | Path to put the file |
+
+### `deleteObject`
+
+<pre>
+    public static function deleteObject($bucketName, $file): string
+</pre>
+
+#### Description
+Removes the null version (if there is one) of an object and inserts a delete marker, which becomes the latest version of the object.
+#### Parameters
+
+| Option key   | Description                       |
+| ------------ | --------------------------------- |
+| **bucketName** | Name of the bucket to delete the object from |
+| **file** | File to delete |
+
+
+## Example
+
+### Create a bucket
+
+<pre>
+$bucketName = 'yourUniqueBucketName';
+$credetials = [
+    'key' => ['API_KEY'],
+    'secret' => ['API_SECRET']  
+];
+
+S3::init($credentials);
+$result = S3::create($bucketName);
+</pre>
+
+## Options
+
+The table below shows all the available options accepted by ```init``` function.
+
+| Program  |  Description |
+|---|---|
+| `region`	| Bucket region. See all the available regions [here](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html) | 
 ---
 
 ## Contributing
@@ -116,6 +159,6 @@ This project has adopted the [Proximify Open Source Code of Conduct](https://git
 
 Copyright (c) Proximify Inc. All rights reserved.
 
-Licensed under the [MIT](https://opensource.org/licenses/MIT) license.
+Licensed under the [GNU General Public License Version 2](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html) license.
 
 **Software component** is made by [Proximify](https://proximify.com). We invite the community to participate.
