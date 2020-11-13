@@ -130,8 +130,8 @@ Removes the null version (if there is one) of an object and inserts a delete mar
 <pre>
 $bucketName = 'yourUniqueBucketName';
 $credetials = [
-    'key' => ['API_KEY'],
-    'secret' => ['API_SECRET']  
+    'key' => 'API_KEY',
+    'secret' => 'API_SECRET'
 ];
 
 S3::init($credentials);
