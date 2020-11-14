@@ -166,6 +166,38 @@ class S3
         return $effectiveUri;
     }
 
+    /**
+     * Downloads a bucket to the local filesystem
+     * 
+     * @param string $bucketName Bucket name to download from
+     * @param string $localDir Local directory to download to
+     */
+    public static function downloadBucket(string $bucketName,
+         string $localDir): void
+    {
+        try {
+            $result = self::$client->downloadBucket($localDir, $bucketName);
+        } catch (S3Exception $e) {
+            echo $e->getMessage() . PHP_EOL;
+        }
+    }
+
+    /**
+     * Downloads the path in a bucket to the local filesystem
+     * 
+     * @param string $bucketName Bucket name to download from
+     * @param string $localDir Local directory to download to
+     */
+    public static function download(string $bucketName, 
+        string $localDir, string $path): void
+    {
+        try {
+            $result = self::$client->downloadBucket($localDir, 
+                $bucketName, $path);
+        } catch (S3Exception $e) {
+            echo $e->getMessage() . PHP_EOL;
+        }
+    }
 
     /**
      * Removes the null version (if there is one) of an object and inserts 
