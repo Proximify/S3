@@ -50,7 +50,7 @@ Go to dev directory and type:
 ../vendor/bin/phpunit tests/
 </pre>
 
-<b>Note:</b> You will need AWS to run the test suit. To get your AWS crendetials, follow the steps [here.](https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html)
+<b>Note:</b> You will need AWS credentials to run the test suit. To get yours, follow the steps [here.](https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html)
 
 ## Contributing
 
