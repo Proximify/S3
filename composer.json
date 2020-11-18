@@ -14,6 +14,11 @@
             "Proximify\\": "src"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Proximify\\S3\\Tests\\": "dev/tests"
+        }
+    },
     "minimum-stability": "dev",
     "require": {
         "php": ">=7.1.0",

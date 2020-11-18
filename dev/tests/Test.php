@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-require_once('../vendor/autoload.php');
+namespace Proximify\S3\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Proximify\S3;
