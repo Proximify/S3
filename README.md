@@ -39,7 +39,8 @@ The table below shows all the available options accepted by ```init``` function.
 
 | Program  |  Description |
 |---|---|
-| `region`	| Bucket region. See all the available regions [here](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html)
+| `region`	| Bucket region. See all the available regions [here](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html) | 
+---
 
 ## Testing
 
@@ -49,7 +50,7 @@ Go to dev directory and type:
 ../vendor/bin/phpunit tests/
 </pre>
 
-<b>Note:</b> You will need AWS API credentials to run the test suit. To get yours, follow the steps [here].(https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html)
+<b>Note:</b> You will need AWS to run the test suit. To get your AWS crendetials, follow the steps [here.](https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html)
 
 ## Contributing
 
