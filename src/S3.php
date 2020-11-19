@@ -57,6 +57,8 @@ class S3
      */
     public static function create(string $bucketName): string
     {
+        $bucketName = strtolower($bucketName);
+
         if (!S3Client::isBucketDnsCompatible($bucketName))
             throw new Exception('The bucket name is invalid.');
         
@@ -109,7 +111,7 @@ class S3
 
         try {
             $result = self::$client->deleteBucket([
-                'Bucket' => $bucketName,
+                'Bucket' => strtolower($bucketName),
             ]);
         } catch (AwsException $e) {
             return 'Error: ' . $e->getAwsErrorMessage();
@@ -129,7 +131,9 @@ class S3
     public static function empty($bucketName): void
     {
         $batch = \Aws\S3\BatchDelete::
-            fromListObjects(self::$client, ['Bucket' => $bucketName]);
+            fromListObjects(self::$client, [
+                'Bucket' => strtolower($bucketName)
+            ]);
         $batch->delete();
     }
 
@@ -153,7 +157,7 @@ class S3
 
         try {
             $result = self::$client->putObject([
-                'Bucket' => $bucketName,
+                'Bucket' => strtolower($bucketName),
                 'Key' => $path,
                 'SourceFile' => $file,
             ]);
@@ -176,7 +180,8 @@ class S3
          string $localDir): void
     {
         try {
-            $result = self::$client->downloadBucket($localDir, $bucketName);
+            $result = self::$client->downloadBucket($localDir, 
+                strtolower($bucketName));
         } catch (S3Exception $e) {
             echo $e->getMessage() . PHP_EOL;
         }
@@ -193,7 +198,7 @@ class S3
     {
         try {
             $result = self::$client->downloadBucket($localDir, 
-                $bucketName, $path);
+                strtolower($bucketName), $path);
         } catch (S3Exception $e) {
             echo $e->getMessage() . PHP_EOL;
         }
@@ -213,7 +218,7 @@ class S3
     {
         try {
             $result = self::$client->deleteObject([
-                'Bucket' => $bucketName,
+                'Bucket' => strtolower($bucketName),
                 'Key'    => $file
             ]);
         } catch (S3Exception $e) {
